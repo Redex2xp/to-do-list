@@ -37,7 +37,7 @@ jobs:
       run: pip install pytest requests # Шаг 3: Устанавливаем зависимости для тестов
 
     - name: 5. Build and run containers
-      run: docker-compose up -d --build # Шаг 4: Собираем образы и запускаем контейнеры в фоновом режиме
+      run: docker compose up -d --build # Шаг 4: Собираем образы и запускаем контейнеры в фоновом режиме
 
     - name: 6. Run tests
       run: pytest # Шаг 5: Запускаем тесты
@@ -47,7 +47,7 @@ jobs:
 
     - name: 7. Stop containers
       if: always() # Этот шаг выполняется всегда, даже если тесты упали
-      run: docker-compose down # Шаг 6: Останавливаем и удаляем контейнеры для очистки
+      run: docker compose down # Шаг 6: Останавливаем и удаляем контейнеры для очистки
 
     # --- Опциональные шаги для деплоя ---
     # Раскомментируйте и настройте, если нужно публиковать образ
