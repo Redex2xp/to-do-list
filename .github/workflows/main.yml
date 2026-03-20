@@ -39,13 +39,24 @@ jobs:
     - name: 5. Build and run containers
       run: docker compose up -d --build # Шаг 4: Собираем образы и запускаем контейнеры в фоновом режиме
 
+    - name: 6. Save app image to tar
+      run: |
+        mkdir -p artifacts
+        docker save onit-app:latest -o artifacts/onit-app.tar || docker save onit-app -o artifacts/onit-app.tar
+
+    - name: 7. Upload app image artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: onit-app-image
+        path: artifacts/onit-app.tar
+
     - name: 6. Run tests
       run: pytest # Шаг 5: Запускаем тесты
       # Тесты будут обращаться к http://localhost:8000, 
       # где localhost - это виртуальная машина GitHub Actions, 
       # на которой запущен наш docker-compose.
 
-    - name: 7. Stop containers
+    - name: 8. Stop containers
       if: always() # Этот шаг выполняется всегда, даже если тесты упали
       run: docker compose down # Шаг 6: Останавливаем и удаляем контейнеры для очистки
 
